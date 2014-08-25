@@ -121,6 +121,7 @@ namespace AHTL{
 #pragma omp barrier
           delete private_bins[tid];
 
+#pragma omp barrier
 #pragma omp master
           {
             delete private_bins;
@@ -206,6 +207,7 @@ namespace AHTL{
 #pragma omp barrier
           delete private_bins[tid];
 
+#pragma omp barrier
 #pragma omp master
           {
             delete private_bins;
@@ -290,6 +292,7 @@ namespace AHTL{
 #pragma omp barrier
           delete private_bins[tid];
 
+#pragma omp barrier
 #pragma omp master
           {
             delete private_bins;
@@ -344,9 +347,14 @@ namespace AHTL{
           end = MY_END(tid, num_threads, Histogram<T>::data_size_);
 
           // Perform histogram
+          //if(tid == 0)
           switch ( switch_value<T>::value )
           {
             case 1:
+#pragma omp critical
+            {
+              std::cout<<end-start<<" "<<tid<<std::endl;
+            }
               PARTITION(Histogram<T>::data_ + start, boundaries_, end - start, private_bins[tid], Histogram<T>::num_bins_);
               break;
 
@@ -373,6 +381,7 @@ namespace AHTL{
 #pragma omp barrier
           delete private_bins[tid];
 
+#pragma omp barrier
 #pragma omp master
           {
             delete private_bins;

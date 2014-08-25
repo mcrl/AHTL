@@ -60,7 +60,7 @@ float * hist_build_tree(float * _boundary, unsigned int _bin_count)
   //float largest = _boundary[_bin_count] + EPS;
   float largest = FLT_MAX;
   for(i = _bin_count; i < N2bin_count; i++) //init the empty tree element with the largest bin boundary
-    boundary[i] = largest;	
+    boundary[i] = largest;  
 
   float * simd_pack = (float *)_mm_malloc(sizeof(float) * N2bin_count * 2, 4096); //simd packed tree
   memset(simd_pack, 0, sizeof(float) * N2bin_count * 2); //size of simd packed tree is larger than bin.
@@ -188,7 +188,7 @@ int hist_binary_float_simd
 
   for(N2bin_count=1; N2bin_count < _bin_count; N2bin_count *= VLEN); 
 
-  //		printf("N2bin_count = %d, count=%d\n", N2bin_count, count);
+  //    printf("N2bin_count = %d, count=%d\n", N2bin_count, count);
 
 
   float * boundary = (float *)_mm_malloc(sizeof(float) * N2bin_count, 64); 
@@ -196,7 +196,7 @@ int hist_binary_float_simd
 
   float largest = _boundary[_bin_count] + EPS;
   for(i = _bin_count; i < N2bin_count; i++) //init the empty tree element with the largest bin boundary
-    boundary[i] = largest;	
+    boundary[i] = largest;  
 
 
   int H_OFFSET; //height of small tree with VLEN - 1 element
@@ -407,7 +407,7 @@ int hist_binary_float_simd
   {
     x = data[i];
     //if(!(i & 0xf))
-    //	_mm_prefetch((char const *)(data + i + 512), _MM_HINT_T0 );
+    //  _mm_prefetch((char const *)(data + i + 512), _MM_HINT_T0 );
     // x =  (float) ((i * 47) % 256);
     _VECTOR item = _MM_SET1(x);
     idx = tst = curidx = 0;
@@ -481,7 +481,7 @@ curidx = table[curidx>>8] + table[curidx % 256];
   }
 #endif
 
-  //	printf("last element %d\n", bin[0]);
+  //  printf("last element %d\n", bin[0]);
 
   _mm_free(boundary);
   return 0;

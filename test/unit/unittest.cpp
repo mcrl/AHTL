@@ -4,7 +4,7 @@
 #include<sys/time.h>
 #include<omp.h>
 
-#define N 10000000
+#define N 100000000
 #define M 256
 #define EPS 0.01
 
@@ -46,6 +46,7 @@ int main(void)
   TIMER_CHECK("Data & result init")
   AHTL::FixedHistogram<float> x = AHTL::FixedHistogram<float>(M, 0, 1);
   AHTL::VariableHistogram<float> y = AHTL::VariableHistogram<float>(M);
+  AHTL::VariableHistogram<float> z = AHTL::VariableHistogram<float>(M);
   TIMER_CHECK("Instance init")
   x.SetData(data, N);
   y.SetData(data, N);
@@ -109,7 +110,6 @@ int main(void)
   y.CleanResult();
   TIMER_CHECK("Comparison and clean")
 
-/*
   std::cout << "--- PARTITION HISTOGRAM ---" << std::endl;
   y.BuildHistogramPartitionSearch();
   TIMER_CHECK("Histogram")
@@ -118,8 +118,6 @@ int main(void)
   RESULT_CHECK(result, result_compare) 
   y.CleanResult();
   TIMER_CHECK("Comparison and clean")
-  */
-
 
   std::cout << "------ SINGLE THREAD EXECUTION ------" << std::endl;
 #pragma omp parallel num_threads(2) shared(x,y,data,result,result_compare,TIMER_VARS) // The library do sequential histogram in omp_parallel region
@@ -127,6 +125,7 @@ int main(void)
     while(1){
       if(omp_get_thread_num() != 0)
         break;
+
       std::cout << "--- PRIVATE HISTOGRAM ---" << std::endl;
       x.BuildHistogramPrivate();
       TIMER_CHECK("Histogram")
@@ -175,7 +174,6 @@ int main(void)
       y.CleanResult();
       TIMER_CHECK("Comparison and clean")
 
-/*
       std::cout << "--- PARTITION HISTOGRAM ---" << std::endl;
       y.BuildHistogramPartitionSearch();
       TIMER_CHECK("Histogram")
@@ -184,7 +182,7 @@ int main(void)
       RESULT_CHECK(result, result_compare) 
       y.CleanResult();
       TIMER_CHECK("Comparison and clean")
-      */
+
       break;
     }
   }

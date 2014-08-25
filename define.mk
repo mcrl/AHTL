@@ -23,7 +23,7 @@ TARGET = $(LIB_AHTL).so
 LIB_DEP =
 endif
 
-ISA = avx
+ISA = mic
 
 
 ifeq ($(ISA),sse)
